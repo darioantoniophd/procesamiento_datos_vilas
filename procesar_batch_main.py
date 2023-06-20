@@ -20,7 +20,7 @@ fig2.update_layout(title= r'$\text{Viscoelastic trace}$')
 
 with open(output_file, 'w', newline='') as csvfile:
 	writer = csv.writer(csvfile)
-	writer.writerow(['Path', 'Filename','pbase','ct','A1','A5','A10'])
+	writer.writerow(['Path', 'Filename','pbase','ct','A1','A5','A10','deltaPmed'])
 	for root, dirs, files in os.walk(path):
 		for file in files:
 			if os.path.splitext(file)[1] == '.dat':
@@ -32,8 +32,8 @@ with open(output_file, 'w', newline='') as csvfile:
 							if 'FREC' not in filename:
 								print('FILEPATH',filepath)
 								outproces = procesar(filepath,filename,True,fig0,fig1,fig2)
-								writer.writerow([filepath, filename, outproces[0], outproces[1], outproces[2], outproces[3], outproces[4]])
-								print ("P_base",outproces[0],", CT:",outproces[1],", A10:",outproces[4])
+								writer.writerow([filepath, filename, outproces[0], outproces[1], outproces[2], outproces[3], outproces[4], outproces[5]])
+								print ("P_base",outproces[0],", CT:",outproces[1],", A10:",outproces[4],", deltaPmed:",outproces[5])
 			
 fig0.show()
 fig1.show()

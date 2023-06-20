@@ -39,6 +39,8 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	A10=-1
 	pbase=-1
 	
+	Pmed0 = ymin[5]+ ampli_smooth[5]
+	
 	for i, num in enumerate(ampli_smooth):
 	    if num > 60 and ct == -1:
 	        ct = t[i]
@@ -47,6 +49,7 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 		for i, num in enumerate(t):
 		  if num > ct+600 and  A10 == -1:
 		    A10 = ampli_smooth[i]
+		    Pmed10 = ymin[i]+ A10
 		  elif num > ct+300 and  A5 == -1:
 		    A5 = ampli_smooth[i]
 		  elif num > ct+60 and  A1 == -1:
@@ -54,7 +57,10 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 		  elif num > 100 and pbase == -1:
 		    pbase = ampli_smooth[i]
 	
+	deltaPmed = Pmed10 - Pmed0
+	
 	fig0.add_traces(go.Scatter(x=x, y=y, name=filename))
+	#fig0.add_traces(go.Scatter(x=t, y=ampli_smooth+ymin, name=filename+"_pmed"))
 	#fig0.add_traces(go.Scatter(x=x[idx_max], y=y[idx_max], name=filename+"_top"))
 	#fig0.add_traces(go.Scatter(x=x[idx_min], y=y[idx_min], name=filename+"_bottom"))
 	
@@ -62,9 +68,9 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	#fig1.add_traces(go.Scatter(x=t, y=ampli, name=filename+"_amplitude"))
 	fig1.add_traces(go.Scatter(x=t, y=ampli_smooth, name=filename+"_amplitude_smooth"))
 	
-	fig2.add_traces(go.Scatter(x=t, y=ampli_smooth/2+ymin, name=filename+"_pmed"))
+	fig2.add_traces(go.Scatter(x=t, y=ampli_smooth+ymin, name=filename+"_pmed"))
 	
-	return [pbase,ct,A1,A5,A10]
+	return [pbase,ct,A1,A5,A10, deltaPmed]
 	
 	# print ("P_base",pbase)
 	# print ("CT:",ct)	
