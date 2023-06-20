@@ -43,21 +43,21 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	
 	for i, num in enumerate(ampli_smooth):
 	    if num > 60 and ct == -1:
-	        ct = t[i]
+	        ct = round(t[i],2)
 	        break
 	if ct>-1:
 		for i, num in enumerate(t):
 		  if num > ct+600 and  A10 == -1:
-		    A10 = ampli_smooth[i]
+		    A10 = round(ampli_smooth[i],2)
 		    Pmed10 = ymin[i]+ A10
 		  elif num > ct+300 and  A5 == -1:
-		    A5 = ampli_smooth[i]
+		    A5 = round(ampli_smooth[i],2)
 		  elif num > ct+60 and  A1 == -1:
-		    A1 = ampli_smooth[i]
+		    A1 = round(ampli_smooth[i],2)
 		  elif num > 100 and pbase == -1:
-		    pbase = ampli_smooth[i]
+		    pbase = round(ampli_smooth[i],2)
 	
-	deltaPmed = Pmed10 - Pmed0
+	deltaPmed = round(Pmed10 - Pmed0,2)
 	
 	fig0.add_traces(go.Scatter(x=x, y=y, name=filename))
 	#fig0.add_traces(go.Scatter(x=t, y=ampli_smooth+ymin, name=filename+"_pmed"))
