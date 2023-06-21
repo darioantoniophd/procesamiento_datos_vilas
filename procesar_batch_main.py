@@ -8,14 +8,15 @@ output_file="/home/dario/Dropbox/MZP/desarrollo/software_medicion/procesamiento_
 path="/home/dario/Documents/mediciones_vilas02/data_a_procesar"
 enablePlot=False
 
+fig0= go.Figure()
+fig1= go.Figure()
+fig2= go.Figure()
 if enablePlot:
-	fig0= go.Figure()
+	
 	fig0.update_layout(xaxis_title = r'$\text{Time } T \text{ in s}  $', yaxis_title = r'$\text{Pressure } \text{ in Pa}$')
 	fig0.update_layout(title= r'$\text{Viscoelastic trace}$')
-	fig1= go.Figure()
 	fig1.update_layout(xaxis_title = r'$\text{Time } T \text{ in s}  $', yaxis_title = r'$\text{Pressure } \text{ in Pa}$')
 	fig1.update_layout(title= r'$\text{Viscoelastic trace}$')
-	fig2= go.Figure()
 	fig2.update_layout(xaxis_title = r'$\text{Time } T \text{ in s}  $', yaxis_title = r'$\text{Pressure } \text{ in Pa}$')
 	fig2.update_layout(title= r'$\text{Viscoelastic trace}$')
 
@@ -36,8 +37,8 @@ with open(output_file, 'w', newline='') as csvfile:
 						writer.writerow([filepath, filename, outproces[0], outproces[1], outproces[2], outproces[3], outproces[4], outproces[5]])
 						print ("P_base",outproces[0],", CT:",outproces[1],", A10:",outproces[4],", deltaPmed:",outproces[5])
 						
-					except Exception:
-						print ('The file: '+filepath+' had an error.')
+					except Exception as e:
+						print("Error:", str(e))
     
 if enablePlot:
 	fig0.show()
