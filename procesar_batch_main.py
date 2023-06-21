@@ -6,7 +6,7 @@ from procesar_batch_funciones import *
 
 output_file="/home/dario/Dropbox/MZP/desarrollo/software_medicion/procesamiento_amplitud_vilas02/mediciones_procesadas.csv"
 path="/home/dario/Documents/mediciones_vilas02/data_a_procesar"
-enablePlot=False
+enablePlot=True
 
 fig0= go.Figure()
 fig1= go.Figure()
