@@ -37,11 +37,11 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	A1=-1
 	A5=-1
 	A10=-1
-	pbase=-1
+	Abase=-1
 	Pmed10=-1
 	Pmed0=-1
 	
-	Pmed0 = ymin[5]+ ampli_smooth[5]
+	Pmed0 = round(ymin[5]+ ampli_smooth[5],2)
 	
 	for i, num in enumerate(ampli_smooth):
 	    if num > 60 and ct == -1:
@@ -51,15 +51,14 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 		for i, num in enumerate(t):
 		  if num > ct+600 and  A10 == -1:
 		    A10 = round(ampli_smooth[i],2)
-		    Pmed10 = ymin[i]+ A10
+		    Pmed10 = round(ymin[i]+ A10,2)
 		  elif num > ct+300 and  A5 == -1:
 		    A5 = round(ampli_smooth[i],2)
 		  elif num > ct+60 and  A1 == -1:
 		    A1 = round(ampli_smooth[i],2)
-		  elif num > 100 and pbase == -1:
-		    pbase = round(ampli_smooth[i],2)
+		  elif num > 100 and Abase == -1:
+		    Abase = round(ampli_smooth[i],2)
 	
-	deltaPmed = round(Pmed10 - Pmed0,2)
 	
 	if enableplot:
 		
@@ -74,9 +73,9 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 		
 		fig2.add_traces(go.Scatter(x=t, y=ampli_smooth+ymin, name=filename+"_pmed"))
 	
-	return [pbase,ct,A1,A5,A10, deltaPmed]
+	return [Abase,ct,A1,A5,A10, Pmed0, Pmed10]
 	
-	# print ("P_base",pbase)
+	# print ("P_base",Abase)
 	# print ("CT:",ct)	
 	# print ("A1:",A1)
 	# print ("A5:",A5)

@@ -23,7 +23,7 @@ if enablePlot:
 
 with open(output_file, 'w', newline='') as csvfile:
 	writer = csv.writer(csvfile)
-	writer.writerow(['Path', 'Filename','pbase','ct','A1','A5','A10','deltaPmed'])
+	writer.writerow(['Path', 'Filename','A_base','ct','A1','A5','A10','Pmed_base','Pmed_A10'])
 	for root, dirs, files in os.walk(path):
 		for file in files:
 			if os.path.splitext(file)[1] == '.dat':
@@ -34,8 +34,8 @@ with open(output_file, 'w', newline='') as csvfile:
 					print('FILEPATH',filepath)
 					try:
 						outproces = procesar(filepath,filename,enablePlot,fig0,fig1,fig2)
-						writer.writerow([filepath, filename, outproces[0], outproces[1], outproces[2], outproces[3], outproces[4], outproces[5]])
-						print ("P_base",outproces[0],", CT:",outproces[1],", A10:",outproces[4],", deltaPmed:",outproces[5])
+						writer.writerow([filepath, filename, outproces[0], outproces[1], outproces[2], outproces[3], outproces[4], outproces[5], outproces[6]])
+						print ("A_base",outproces[0],", CT:",outproces[1],", A10:",outproces[4],", Pmed_base:",outproces[5],", Pmed_A10:",outproces[6])
 						
 					except Exception as e:
 						print("Error:", str(e))
