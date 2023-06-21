@@ -26,14 +26,12 @@ with open(output_file, 'w', newline='') as csvfile:
 			if os.path.splitext(file)[1] == '.dat':
 				filepath = os.path.join(root, file)
 				filename = os.path.splitext(file)[0]
-				if 'PD' not in filename:
-					if 'CC' not in filename:
-						if 'TEST' not in filename:
-							if 'FREC' not in filename:
-								print('FILEPATH',filepath)
-								outproces = procesar(filepath,filename,True,fig0,fig1,fig2)
-								writer.writerow([filepath, filename, outproces[0], outproces[1], outproces[2], outproces[3], outproces[4], outproces[5]])
-								print ("P_base",outproces[0],", CT:",outproces[1],", A10:",outproces[4],", deltaPmed:",outproces[5])
+				# Las mediciones que incluyen estas secuencias de caracteres no se consideran en el análisis:
+				if all(keyword not in filename for keyword in ['PD', 'CC', 'TEST', 'FREC']):
+					print('FILEPATH',filepath)
+					outproces = procesar(filepath,filename,True,fig0,fig1,fig2)
+					writer.writerow([filepath, filename, outproces[0], outproces[1], outproces[2], outproces[3], outproces[4], outproces[5]])
+					print ("P_base",outproces[0],", CT:",outproces[1],", A10:",outproces[4],", deltaPmed:",outproces[5])
 			
 fig0.show()
 fig1.show()
