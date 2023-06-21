@@ -56,7 +56,7 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 		    A5 = round(ampli_smooth[i],2)
 		  elif num > ct+60 and  A1 == -1:
 		    A1 = round(ampli_smooth[i],2)
-		  elif num > 100 and Abase == -1:
+		  elif num > ct/2 and Abase == -1:
 		    Abase = round(ampli_smooth[i],2)
 	
 	
