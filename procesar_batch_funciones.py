@@ -61,16 +61,18 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	
 	deltaPmed = round(Pmed10 - Pmed0,2)
 	
-	fig0.add_traces(go.Scatter(x=x, y=y, name=filename))
-	#fig0.add_traces(go.Scatter(x=t, y=ampli_smooth+ymin, name=filename+"_pmed"))
-	#fig0.add_traces(go.Scatter(x=x[idx_max], y=y[idx_max], name=filename+"_top"))
-	#fig0.add_traces(go.Scatter(x=x[idx_min], y=y[idx_min], name=filename+"_bottom"))
-	
-	
-	#fig1.add_traces(go.Scatter(x=t, y=ampli, name=filename+"_amplitude"))
-	fig1.add_traces(go.Scatter(x=t, y=ampli_smooth, name=filename+"_amplitude_smooth"))
-	
-	fig2.add_traces(go.Scatter(x=t, y=ampli_smooth+ymin, name=filename+"_pmed"))
+	if enableplot:
+		
+		fig0.add_traces(go.Scatter(x=x, y=y, name=filename))
+		#fig0.add_traces(go.Scatter(x=t, y=ampli_smooth+ymin, name=filename+"_pmed"))
+		#fig0.add_traces(go.Scatter(x=x[idx_max], y=y[idx_max], name=filename+"_top"))
+		#fig0.add_traces(go.Scatter(x=x[idx_min], y=y[idx_min], name=filename+"_bottom"))
+		
+		
+		#fig1.add_traces(go.Scatter(x=t, y=ampli, name=filename+"_amplitude"))
+		fig1.add_traces(go.Scatter(x=t, y=ampli_smooth, name=filename+"_amplitude_smooth"))
+		
+		fig2.add_traces(go.Scatter(x=t, y=ampli_smooth+ymin, name=filename+"_pmed"))
 	
 	return [pbase,ct,A1,A5,A10, deltaPmed]
 	
