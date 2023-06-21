@@ -75,9 +75,4 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	
 	return [Abase,ct,A1,A5,A10, Pmed0, Pmed10]
 	
-	# print ("P_base",Abase)
-	# print ("CT:",ct)	
-	# print ("A1:",A1)
-	# print ("A5:",A5)
-	# print ("A10:",A10)
 	
