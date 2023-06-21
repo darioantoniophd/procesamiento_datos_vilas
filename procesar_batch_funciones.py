@@ -38,6 +38,8 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	A5=-1
 	A10=-1
 	pbase=-1
+	Pmed10=-1
+	Pmed0=-1
 	
 	Pmed0 = ymin[5]+ ampli_smooth[5]
 	
