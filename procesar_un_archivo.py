@@ -5,6 +5,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 from scipy.signal import argrelextrema
 from scipy.signal import savgol_filter
+import json
 
 pathtofile = "/home/dario/Dropbox/MZP/desarrollo/software_medicion/procesamiento_amplitud_vilas02/archivosdedatos/RP-VI-442.dat"
 

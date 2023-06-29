@@ -3,10 +3,15 @@ import csv
 import plotly.express as px
 import plotly.graph_objects as go
 from procesar_batch_funciones import *
+import yaml
 
-output_file="/home/dario/Dropbox/MZP/desarrollo/software_medicion/procesamiento_amplitud_vilas02/mediciones_procesadas.csv"
-path="/home/dario/Documents/mediciones_vilas02/data_a_procesar"
-enablePlot=True
+
+with open("config.yml", "r") as file:
+    data = yaml.safe_load(file)
+
+output_file=data['output_file']
+path=data['path']
+enablePlot=data['enablePlot']
 
 fig0= go.Figure()
 fig1= go.Figure()
@@ -26,7 +31,7 @@ with open(output_file, 'w', newline='') as csvfile:
 	writer.writerow(['Path', 'Filename','A_base','ct','A1','A5','A10','Pmed_base','Pmed_A10'])
 	for root, dirs, files in os.walk(path):
 		for file in files:
-			if os.path.splitext(file)[1] == '.dat':
+			if os.path.splitext(file)[1] == '.txt':
 				filepath = os.path.join(root, file)
 				filename = os.path.splitext(file)[0]
 				# Las mediciones que incluyen estas secuencias de caracteres no se consideran en el análisis:

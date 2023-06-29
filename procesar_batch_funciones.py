@@ -5,12 +5,13 @@ import numpy as np
 from scipy.optimize import curve_fit
 from scipy.signal import argrelextrema
 from scipy.signal import savgol_filter
-
+import json
 
 def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
-
-	mem_df = pd.read_csv(pathtofile, delimiter=' ').apply(pd.to_numeric)
 	
+	datos = json.load(open(pathtofile))
+	mem_df= pd.json_normalize(datos["resultados"]["datos"]).apply(pd.to_numeric)
+		
 	x = mem_df['acu.t'].values/1000
 	y = mem_df['dat.pre'].values*-.0046
 	
