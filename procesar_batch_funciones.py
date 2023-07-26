@@ -7,9 +7,12 @@ from scipy.signal import argrelextrema
 from scipy.signal import savgol_filter
 import json
 
+# Extrae datos del archivo json creado por el programa de medición
 def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	
 	datos = json.load(open(pathtofile))
+	qc1 = datos["QC"]["promedioQC1"]
+	qc2 = datos["QC"]["promedioQC2"]
 	mem_df= pd.json_normalize(datos["resultados"]["datos"]).apply(pd.to_numeric)
 		
 	x = mem_df['acu.t'].values/1000
@@ -18,21 +21,32 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	idx_max = argrelextrema(y, np.greater,order=3)[0]
 	idx_min = argrelextrema(y, np.less,order=3)[0]
 	
+	if idx_max[0] > idx_min[0]:
+		primeromax = True
+	else:
+		primeromax = False
+	
 	ymax = [y[i] for i in idx_max]
 	ymin = [y[i] for i in idx_min]
 	
 	if len(ymax)>len(ymin):
 	  ymax = ymax[:len(ymin)]
-	  t = [x[i] for i in idx_min]
+	  #t = [x[i] for i in idx_min]
 	
 	if len(ymin)>len(ymax):
 	  ymin = ymin[:len(ymax)]
-	  t = [x[i] for i in idx_max]
+	  #t = [x[i] for i in idx_max]
+	#else:
+	 # t = [x[i] for i in idx_max]
+	
+	if primeromax:
+		t = [x[i] for i in idx_max]
 	else:
-	  t = [x[i] for i in idx_max]
+		t = [x[i] for i in idx_min]
+		
 	
 	ampli = [(xx - yy)/2 for xx, yy in zip(ymax, ymin)]
-	ampli_smooth = savgol_filter(ampli, 51, 3)
+	ampli_smooth = savgol_filter(ampli, 31, 7)
 	
 	ct=-1
 	A1=-1
@@ -64,9 +78,10 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	if enableplot:
 		
 		fig0.add_traces(go.Scatter(x=x, y=y, name=filename))
-		#fig0.add_traces(go.Scatter(x=t, y=ampli_smooth+ymin, name=filename+"_pmed"))
-		#fig0.add_traces(go.Scatter(x=x[idx_max], y=y[idx_max], name=filename+"_top"))
-		#fig0.add_traces(go.Scatter(x=x[idx_min], y=y[idx_min], name=filename+"_bottom"))
+		fig0.add_traces(go.Scatter(x=t, y=ymax-ampli_smooth, name=filename+"_pmed"))
+		
+		fig0.add_traces(go.Scatter(x=x[idx_max], y=y[idx_max], name=filename+"_top"))
+		fig0.add_traces(go.Scatter(x=x[idx_min], y=y[idx_min], name=filename+"_bottom"))
 		
 		
 		#fig1.add_traces(go.Scatter(x=t, y=ampli, name=filename+"_amplitude"))
@@ -74,6 +89,6 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 		
 		fig2.add_traces(go.Scatter(x=t, y=ampli_smooth+ymin, name=filename+"_pmed"))
 	
-	return [Abase,ct,A1,A5,A10, Pmed0, Pmed10]
+	return [Abase,ct,A1,A5,A10, Pmed0, Pmed10, qc1, qc2]
 	
 	
