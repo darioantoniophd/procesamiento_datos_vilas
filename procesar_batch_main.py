@@ -6,7 +6,7 @@ import csv
 import plotly.express as px
 import plotly.graph_objects as go
 from procesar_batch_funciones import *
-#from gsheets import *
+from gsheets import *
 import yaml
 
 
@@ -21,6 +21,9 @@ escribePlanilla=configu['escribePlanilla']
 fig0= go.Figure()
 fig1= go.Figure()
 fig2= go.Figure()
+
+worksheet = 0
+
 if enablePlot:
 	
 	fig0.update_layout(xaxis_title = r'$\text{Time } T \text{ in s}  $', yaxis_title = r'$\text{Pressure } \text{ in Pa}$')
@@ -31,9 +34,19 @@ if enablePlot:
 	fig2.update_layout(title= r'$\text{Viscoelastic trace}$')
 
 if escribePlanilla:
-	open_worksheet("config.yml")
+	worksheet = open_worksheet("config.yml")
+	column_dict = {}
+	column_dict["A_base"]=find_column_number_by_text(worksheet,"Amplitud_base")
+	column_dict["CT"]=find_column_number_by_text(worksheet,"CT [seg]")
+	column_dict["A1"]=find_column_number_by_text(worksheet,"A1 (60s+CT) [Pa]")
+	column_dict["A5"]=find_column_number_by_text(worksheet,"A5 (300s+CT) [Pa]")
+	column_dict["A10"]=find_column_number_by_text(worksheet,"A10 (600s+CT) [Pa]")
+	column_dict["Pmed_base"]=find_column_number_by_text(worksheet,"Pmed_base")
+	column_dict["Pmed_A10"]=find_column_number_by_text(worksheet,"Pmed_A10")
+	column_dict["QC1"]=find_column_number_by_text(worksheet,"Canal cerrado Promedio QC1 [Pa]")
+	column_dict["QC2"]=find_column_number_by_text(worksheet,"Canal abierto Promedio QC2 [Pa]")
+	column_dict["Procesamiento"]=find_column_number_by_text(worksheet,"Procesamiento")
 	
-
 with open(output_file, 'w', newline='') as csvfile:
 	writer = csv.writer(csvfile)
 	writer.writerow(['Path', 'Filename','A_base','ct','A1','A5','A10','Pmed_base','Pmed_A10'])
@@ -53,11 +66,22 @@ with open(output_file, 'w', newline='') as csvfile:
 					except Exception as e:
 						print("Error:", str(e))
 					
-					#try:
-						#write_gsheet_row ("Amplitud_base",outproces[0],"CT [seg]",outproces[1],"A1 (60s+CT) [Pa]",outproces[2],"A5 (300s+CT) [Pa]",outproces[3],"A10 (600s+CT) [Pa]",outproces[4],"Pmed_base",outproces[5],"Pmed_A10",outproces[6],"Canal cerrado Promedio QC1 [Pa]",outproces[7],"Canal abierto Promedio QC2 [Pa]",outproces[8])
-						
-					#except Exception as e:
-						#print("Error:", str(e))
+					if escribePlanilla:
+						try:
+							target_row = find_row_by_identifier_in_column_b(worksheet,filename)
+							modify_row (worksheet,target_row,column_dict["A_base"],outproces[0])
+							modify_row (worksheet,target_row,column_dict["CT"],outproces[1])
+							modify_row (worksheet,target_row,column_dict["A1"],outproces[2])
+							modify_row (worksheet,target_row,column_dict["A5"],outproces[3])
+							modify_row (worksheet,target_row,column_dict["A10"],outproces[4])
+							modify_row (worksheet,target_row,column_dict["Pmed_base"],outproces[5])
+							modify_row (worksheet,target_row,column_dict["Pmed_A10"],outproces[6])
+							modify_row (worksheet,target_row,column_dict["QC1"],outproces[7])
+							modify_row (worksheet,target_row,column_dict["QC2"],outproces[8])
+							modify_row (worksheet,target_row,column_dict["Procesamiento"],"max-min")
+							
+						except Exception as e:
+							print("Error:", str(e))
     
 if enablePlot:
 	fig0.show()
