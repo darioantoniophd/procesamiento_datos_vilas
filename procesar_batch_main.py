@@ -27,11 +27,11 @@ worksheet = 0
 if enablePlot:
 	
 	fig0.update_layout(xaxis_title = r'$\text{Time } T \text{ in s}  $', yaxis_title = r'$\text{Pressure } \text{ in Pa}$')
-	fig0.update_layout(title= r'$\text{Viscoelastic trace}$')
+	fig0.update_layout(title= r'$\text{Trazado viscoelástico - Curva cruda}$')
 	fig1.update_layout(xaxis_title = r'$\text{Time } T \text{ in s}  $', yaxis_title = r'$\text{Pressure } \text{ in Pa}$')
-	fig1.update_layout(title= r'$\text{Viscoelastic trace}$')
+	fig1.update_layout(title= r'$\text{Trazado viscoelástico - Amplitud}$')
 	fig2.update_layout(xaxis_title = r'$\text{Time } T \text{ in s}  $', yaxis_title = r'$\text{Pressure } \text{ in Pa}$')
-	fig2.update_layout(title= r'$\text{Viscoelastic trace}$')
+	fig2.update_layout(title= r'$\text{Presión media}$')
 
 if escribePlanilla:
 	worksheet = open_worksheet("config.yml")
