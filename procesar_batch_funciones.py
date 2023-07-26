@@ -78,10 +78,10 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	if enableplot:
 		
 		fig0.add_traces(go.Scatter(x=x, y=y, name=filename))
-		fig0.add_traces(go.Scatter(x=t, y=ymax-ampli_smooth, name=filename+"_pmed"))
+		#fig0.add_traces(go.Scatter(x=t, y=ymax-ampli_smooth, name=filename+"_pmed"))
 		
-		fig0.add_traces(go.Scatter(x=x[idx_max], y=y[idx_max], name=filename+"_top"))
-		fig0.add_traces(go.Scatter(x=x[idx_min], y=y[idx_min], name=filename+"_bottom"))
+		#fig0.add_traces(go.Scatter(x=x[idx_max], y=y[idx_max], name=filename+"_top"))
+		#fig0.add_traces(go.Scatter(x=x[idx_min], y=y[idx_min], name=filename+"_bottom"))
 		
 		
 		#fig1.add_traces(go.Scatter(x=t, y=ampli, name=filename+"_amplitude"))
