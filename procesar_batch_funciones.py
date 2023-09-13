@@ -92,4 +92,10 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	
 	return [Abase,ct,A1,A5,A10, Pmed0, Pmed10, qc1, qc2, qc3]
 	
-	
+	# procesar2 solo extrae datos del json pero no procesa la cueva
+def procesar2(pathtofile,filename):
+	datos = json.load(open(pathtofile))
+	qc1 = datos["QC"]["promedioQC1"]
+	qc2 = datos["QC"]["promedioQC2"]
+	qc3 = datos["QC"]["promedioQC3"]
+	return [qc1, qc2, qc3]
