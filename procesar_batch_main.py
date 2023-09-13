@@ -45,6 +45,7 @@ if escribePlanilla:
 	column_dict["Pmed_A10"]=find_column_number_by_text(worksheet,"Pmed_A10")
 	column_dict["QC1"]=find_column_number_by_text(worksheet,"Canal cerrado Promedio QC1 [Pa]")
 	column_dict["QC2"]=find_column_number_by_text(worksheet,"Canal abierto Promedio QC2 [Pa]")
+	column_dict["QC3"]=find_column_number_by_text(worksheet,"Canal cerrado Promedio QC3 [Pa]")
 	column_dict["Procesamiento"]=find_column_number_by_text(worksheet,"Procesamiento")
 	
 with open(output_file, 'w', newline='') as csvfile:
@@ -61,7 +62,7 @@ with open(output_file, 'w', newline='') as csvfile:
 					try:
 						outproces = procesar(filepath,filename,enablePlot,fig0,fig1,fig2)
 						writer.writerow([filepath, filename, outproces[0], outproces[1], outproces[2], outproces[3], outproces[4], outproces[5], outproces[6]])
-						print ("A_base",outproces[0],", CT:",outproces[1],", A10:",outproces[4],", Pmed_base:",outproces[5],", Pmed_A10:",outproces[6],", QC1:",outproces[7],", QC2:",outproces[8])
+						print ("A_base",outproces[0],", CT:",outproces[1],", A10:",outproces[4],", Pmed_base:",outproces[5],", Pmed_A10:",outproces[6],", QC1:",outproces[7],", QC2:",outproces[8],", QC3:",outproces[9])
 						
 					except Exception as e:
 						print("Error:", str(e))
@@ -78,6 +79,7 @@ with open(output_file, 'w', newline='') as csvfile:
 							modify_row (worksheet,target_row,column_dict["Pmed_A10"],outproces[6])
 							modify_row (worksheet,target_row,column_dict["QC1"],outproces[7])
 							modify_row (worksheet,target_row,column_dict["QC2"],outproces[8])
+							modify_row (worksheet,target_row,column_dict["QC3"],outproces[9])
 							modify_row (worksheet,target_row,column_dict["Procesamiento"],"max-min")
 							
 						except Exception as e:
