@@ -70,20 +70,21 @@ with open(output_file, 'w', newline='') as csvfile:
 					if escribePlanilla:
 						try:
 							target_row = find_row_by_identifier_in_column_b(worksheet,filename)
-							modify_row (worksheet,target_row,column_dict["A_base"],outproces[0])
-							modify_row (worksheet,target_row,column_dict["CT"],outproces[1])
-							modify_row (worksheet,target_row,column_dict["A1"],outproces[2])
-							modify_row (worksheet,target_row,column_dict["A5"],outproces[3])
-							modify_row (worksheet,target_row,column_dict["A10"],outproces[4])
-							modify_row (worksheet,target_row,column_dict["Pmed_base"],outproces[5])
-							modify_row (worksheet,target_row,column_dict["Pmed_A10"],outproces[6])
-							modify_row (worksheet,target_row,column_dict["QC1"],outproces[7])
-							modify_row (worksheet,target_row,column_dict["QC2"],outproces[8])
-							modify_row (worksheet,target_row,column_dict["QC3"],outproces[9])
-							modify_row (worksheet,target_row,column_dict["Procesamiento"],"max-min")
+							modify_row_with_retry (worksheet,target_row,column_dict["A_base"],outproces[0])
+							modify_row_with_retry (worksheet,target_row,column_dict["CT"],outproces[1])
+							modify_row_with_retry (worksheet,target_row,column_dict["A1"],outproces[2])
+							modify_row_with_retry (worksheet,target_row,column_dict["A5"],outproces[3])
+							modify_row_with_retry (worksheet,target_row,column_dict["A10"],outproces[4])
+							modify_row_with_retry (worksheet,target_row,column_dict["Pmed_base"],outproces[5])
+							modify_row_with_retry (worksheet,target_row,column_dict["Pmed_A10"],outproces[6])
+							modify_row_with_retry (worksheet,target_row,column_dict["QC1"],outproces[7])
+							modify_row_with_retry (worksheet,target_row,column_dict["QC2"],outproces[8])
+							modify_row_with_retry (worksheet,target_row,column_dict["QC3"],outproces[9])
+							modify_row_with_retry (worksheet,target_row,column_dict["Procesamiento"],"max-min")
 							
 						except Exception as e:
 							print("Error:", str(e))
+							
     
 if enablePlot:
 	fig0.show()

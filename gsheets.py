@@ -1,6 +1,7 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import yaml
+import time
 
 with open("config.yml", "r") as file:
     configu = yaml.safe_load(file)
@@ -49,4 +50,18 @@ def find_row_by_identifier_in_column_b(worksheet,key_value):
 
 def modify_row(worksheet, row, col_a, col_a_value):	
     worksheet.update_cell(row, col_a, col_a_value)
+    
+def modify_row_with_retry(worksheet, target_row, column, value):
+    while True:
+        try:
+            modify_row(worksheet, target_row, column, value)
+            break  # If modification is successful, exit the loop
+        except Exception as e:
+            if "RATE_LIMIT_EXCEEDED" in str(e).upper():
+                print("Error:", str(e))
+                print("Waiting for 10 seconds before retrying...")
+                time.sleep(10)
+            else:
+                print("Unhandled Error:", str(e))
+                break  # Exit the loop if it's an unhandled error
     
