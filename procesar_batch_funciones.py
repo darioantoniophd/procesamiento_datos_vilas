@@ -15,6 +15,8 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	qc2 = datos["QC"]["promedioQC2"]
 	qc3 = datos["QC"]["promedioQC3"]
 	mem_df= pd.json_normalize(datos["resultados"]["datos"]).apply(pd.to_numeric)
+	temp_ini = mem_df['temp.z'].values[0]*(-6.48e-6)+89.3
+	temp_fin = mem_df['temp.z'].values[-1]*(-6.48e-6)+89.3
 		
 	x = mem_df['acu.t'].values/1000
 	y = mem_df['dat.pre'].values*-.0046
@@ -90,14 +92,17 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 		
 		fig2.add_traces(go.Scatter(x=t, y=ampli_smooth+ymin, name=filename+"_pmed"))
 	
-	return [Abase,ct,A1,A5,A10, Pmed0, Pmed10, qc1, qc2, qc3]
+	return [Abase,ct,A1,A5,A10, Pmed0, Pmed10, qc1, qc2, qc3, temp_ini, temp_fin]
 	
 	# procesar2 solo extrae datos del json pero no procesa la cueva
 def procesar2(pathtofile,filename):
 	datos = json.load(open(pathtofile))
 	qc1 = datos["QC"]["promedioQC1"]
 	qc2 = datos["QC"]["promedioQC2"]
-	qc3 = datos["QC"]["promedioQC3"]
+	try:
+		qc3 = datos["QC"]["promedioQC3"]
+	except Exception as e:
+		print("Error con QC3:", str(e))
 	
 	mem_df= pd.json_normalize(datos["resultados"]["datos"]).apply(pd.to_numeric)
 		
