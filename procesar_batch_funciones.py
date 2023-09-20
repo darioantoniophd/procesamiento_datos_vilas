@@ -98,4 +98,12 @@ def procesar2(pathtofile,filename):
 	qc1 = datos["QC"]["promedioQC1"]
 	qc2 = datos["QC"]["promedioQC2"]
 	qc3 = datos["QC"]["promedioQC3"]
-	return [qc1, qc2, qc3]
+	
+	mem_df= pd.json_normalize(datos["resultados"]["datos"]).apply(pd.to_numeric)
+		
+	temp_ini = mem_df['temp.z'].values[0]*(-6.48e-6)+89.3
+	temp_fin = mem_df['temp.z'].values[-1]*(-6.48e-6)+89.3
+	
+	
+	
+	return [qc1, qc2, qc3, temp_ini, temp_fin]

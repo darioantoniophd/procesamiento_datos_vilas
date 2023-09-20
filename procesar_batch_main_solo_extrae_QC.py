@@ -20,7 +20,7 @@ worksheet = 0
 	
 with open(output_file, 'w', newline='') as csvfile:
 	writer = csv.writer(csvfile)
-	writer.writerow(['Path', 'Filename','QC1','QC2','QC3'])
+	writer.writerow(['Path', 'Filename','QC1','QC2','QC3','Temp_ini','Temp_fin'])
 	for root, dirs, files in os.walk(path):
 		for file in files:
 			if os.path.splitext(file)[1] == '.txt':
@@ -31,8 +31,8 @@ with open(output_file, 'w', newline='') as csvfile:
 					print('FILEPATH',filepath)
 					try:
 						outproces = procesar2(filepath,filename)
-						writer.writerow([filepath, filename, outproces[0], outproces[1], outproces[2]])
-						print ("QC1",outproces[0],", QC2:",outproces[1],", QC3:",outproces[2])
+						writer.writerow([filepath, filename, outproces[0], outproces[1], outproces[2], outproces[3], outproces[4]])
+						print ("QC1",outproces[0],", QC2:",outproces[1],", QC3:",outproces[2],", T inicial:",outproces[3],", T final:",outproces[4])
 						
 					except Exception as e:
 						print("Error:", str(e))
