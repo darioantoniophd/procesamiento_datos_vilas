@@ -102,7 +102,8 @@ def procesar2(pathtofile,filename):
 	try:
 		qc3 = datos["QC"]["promedioQC3"]
 	except Exception as e:
-		print("Error con QC3:", str(e))
+		print("No hay QC3:", str(e))
+		qc3 = None
 	
 	mem_df= pd.json_normalize(datos["resultados"]["datos"]).apply(pd.to_numeric)
 		
