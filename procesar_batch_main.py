@@ -47,6 +47,8 @@ if escribePlanilla:
 	column_dict["QC2"]=find_column_number_by_text(worksheet,"Canal abierto Promedio QC2 [Pa]")
 	column_dict["QC3"]=find_column_number_by_text(worksheet,"Canal cerrado Promedio QC3 [Pa]")
 	column_dict["Procesamiento"]=find_column_number_by_text(worksheet,"Procesamiento")
+	column_dict["Tamb_i"]=find_column_number_by_text(worksheet,"Tamb_i")
+	column_dict["Tamb_f"]=find_column_number_by_text(worksheet,"Tamb_f")
 	
 with open(output_file, 'w', newline='') as csvfile:
 	writer = csv.writer(csvfile)
@@ -81,6 +83,8 @@ with open(output_file, 'w', newline='') as csvfile:
 							modify_row_with_retry (worksheet,target_row,column_dict["QC2"],outproces[8])
 							modify_row_with_retry (worksheet,target_row,column_dict["QC3"],outproces[9])
 							modify_row_with_retry (worksheet,target_row,column_dict["Procesamiento"],"max-min")
+							modify_row_with_retry (worksheet,target_row,column_dict["Tamb_i"],outproces[10])
+							modify_row_with_retry (worksheet,target_row,column_dict["Tamb_f"],outproces[11])
 							
 						except Exception as e:
 							print("Error:", str(e))
