@@ -47,12 +47,12 @@ if escribePlanilla:
 	column_dict["QC2"]=find_column_number_by_text(worksheet,"Canal abierto Promedio QC2 [Pa]")
 	column_dict["QC3"]=find_column_number_by_text(worksheet,"Canal cerrado Promedio QC3 [Pa]")
 	column_dict["Procesamiento"]=find_column_number_by_text(worksheet,"Procesamiento")
-	column_dict["Tamb_i"]=find_column_number_by_text(worksheet,"Tamb_i")
-	column_dict["Tamb_f"]=find_column_number_by_text(worksheet,"Tamb_f")
+	column_dict["Tz_i"]=find_column_number_by_text(worksheet,"Tz_i")
+	column_dict["Tz_A10"]=find_column_number_by_text(worksheet,"Tz_A10")
 	
 with open(output_file, 'w', newline='') as csvfile:
 	writer = csv.writer(csvfile)
-	writer.writerow(['Path', 'Filename','A_base','ct','A1','A5','A10','Pmed_base','Pmed_A10'])
+	writer.writerow(['Path', 'Filename','A_base','ct','A1','A5','A10','Pmed_base','Pmed_A10','QC1','QC2','QC3','Tz_i','Tz_A10'])
 	for root, dirs, files in os.walk(path):
 		for file in files:
 			if os.path.splitext(file)[1] == '.txt':
@@ -63,8 +63,8 @@ with open(output_file, 'w', newline='') as csvfile:
 					print('FILEPATH',filepath)
 					try:
 						outproces = procesar(filepath,filename,enablePlot,fig0,fig1,fig2)
-						writer.writerow([filepath, filename, outproces[0], outproces[1], outproces[2], outproces[3], outproces[4], outproces[5], outproces[6]])
-						print ("A_base",outproces[0],", CT:",outproces[1],", A10:",outproces[4],", Pmed_base:",outproces[5],", Pmed_A10:",outproces[6],", QC1:",outproces[7],", QC2:",outproces[8],", QC3:",outproces[9])
+						writer.writerow([filepath, filename, outproces[0], outproces[1], outproces[2], outproces[3], outproces[4], outproces[5], outproces[6], outproces[7], outproces[8], outproces[9], outproces[10], outproces[11]])
+						print ("A_base",outproces[0],", CT:",outproces[1],", A10:",outproces[4],", Pmed_base:",outproces[5],", Pmed_A10:",outproces[6],", QC1:",outproces[7],", QC2:",outproces[8],", QC3:",outproces[9],", Tz_i:",outproces[10],", Tz_A10:",outproces[11])
 						
 					except Exception as e:
 						print("Error:", str(e))
@@ -83,8 +83,8 @@ with open(output_file, 'w', newline='') as csvfile:
 							modify_row_with_retry (worksheet,target_row,column_dict["QC2"],outproces[8])
 							modify_row_with_retry (worksheet,target_row,column_dict["QC3"],outproces[9])
 							modify_row_with_retry (worksheet,target_row,column_dict["Procesamiento"],"max-min")
-							modify_row_with_retry (worksheet,target_row,column_dict["Tamb_i"],outproces[10])
-							modify_row_with_retry (worksheet,target_row,column_dict["Tamb_f"],outproces[11])
+							modify_row_with_retry (worksheet,target_row,column_dict["Tz_i"],outproces[10])
+							modify_row_with_retry (worksheet,target_row,column_dict["Tz_A10"],outproces[11])
 							
 						except Exception as e:
 							print("Error:", str(e))
