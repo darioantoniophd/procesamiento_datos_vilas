@@ -20,6 +20,7 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 		
 	x = mem_df['acu.t'].values/1000
 	y = mem_df['dat.pre'].values*-.0046
+	temp_all = mem_df['temp.z'].values*(-6.48e-6)+89.3
 	
 	idx_max = argrelextrema(y, np.greater,order=3)[0]
 	idx_min = argrelextrema(y, np.less,order=3)[0]
@@ -44,9 +45,10 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	
 	if primeromax:
 		t = [x[i] for i in idx_max]
+		temp = [temp_all[i] for i in idx_max]
 	else:
 		t = [x[i] for i in idx_min]
-		
+		temp = [temp_all[i] for i in idx_min]
 	
 	ampli = [(xx - yy)/2 for xx, yy in zip(ymax, ymin)]
 	ampli_smooth = savgol_filter(ampli, 31, 7)
@@ -71,7 +73,7 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 		  if num > ct+600 and  A10 == -1:
 		    A10 = round(ampli_smooth[i],2)
 		    Pmed10 = round(ymin[i]+ A10,2)
-		    temp_A10 = mem_df['temp.z'].values[i]*(-6.48e-6)+89.3
+		    temp_A10 = round(temp[i],2)
 		  elif num > ct+300 and  A5 == -1:
 		    A5 = round(ampli_smooth[i],2)
 		  elif num > ct+60 and  A1 == -1:

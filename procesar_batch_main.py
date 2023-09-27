@@ -67,7 +67,7 @@ with open(output_file, 'w', newline='') as csvfile:
 						print ("A_base",outproces[0],", CT:",outproces[1],", A10:",outproces[4],", Pmed_base:",outproces[5],", Pmed_A10:",outproces[6],", QC1:",outproces[7],", QC2:",outproces[8],", QC3:",outproces[9],", Tz_i:",outproces[10],", Tz_A10:",outproces[11])
 						
 					except Exception as e:
-						print("Error:", str(e))
+						print("Error 1:", str(e))
 					
 					if escribePlanilla:
 						try:
