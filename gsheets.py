@@ -1,5 +1,6 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from googleapiclient import discovery
 import yaml
 import time
 
@@ -15,13 +16,15 @@ def open_worksheet(config_file):
 
 	# Authenticate with the Google Sheets API
 	gc = gspread.authorize(credentials)
-
+	
+	service = discovery.build('sheets', 'v4', credentials=credentials)
+	
 	# Replace 'your_spreadsheet_id' with the ID of your Google Sheet (from the URL).
 	spreadsheet = gc.open_by_key(configu['spreadsheet'])
 
 	# Replace 'Sheet1' with the name of your desired worksheet.
 	worksheet = spreadsheet.worksheet(configu['worksheet'])
-	return worksheet
+	return [spreadsheet.id,worksheet,service]
 
 def find_column_number_by_text(worksheet, text_to_find):
     # Assuming row 4 contains the column headers where you want to search for 'nombre'.
@@ -43,9 +46,11 @@ def find_row(key_value):
 def find_row_by_identifier_in_column_b(worksheet,key_value):
     try:
         # Assuming the key identifier is in column B
+        print("key_value: ",key_value)
         cell = worksheet.find(key_value, in_column=2)
         return cell.row
     except gspread.exceptions.CellNotFound:
+        print("Cell not found: ",key_value)
         return None
 
 def modify_row(worksheet, row, col_a, col_a_value):	
@@ -65,3 +70,20 @@ def modify_row_with_retry(worksheet, target_row, column, value):
                 print("Unhandled Error:", str(e))
                 break  # Exit the loop if it's an unhandled error
     
+def request_append(requests,sheet_id,row,col_a,col_a_value,dtype):
+	requests.append({
+	    'updateCells': {
+	        'range': {
+	            'sheetId': sheet_id,
+	            'startRowIndex': row-1,
+	            'endRowIndex': row,
+	            'startColumnIndex': col_a-1,
+	            'endColumnIndex': col_a
+	        },
+	        
+	        "rows" : [{
+      "values" : [{"userEnteredValue" : {dtype : col_a_value}}]
+       }],
+        "fields" : "*"
+	    }
+	})

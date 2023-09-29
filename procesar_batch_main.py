@@ -34,9 +34,13 @@ if enablePlot:
 	fig2.update_layout(title= r'$\text{Presión media}$')
 
 if escribePlanilla:
-	worksheet = open_worksheet("config.yml")
+	gsheetapi = open_worksheet("config.yml")
+	spreadsheetId = gsheetapi[0]
+	worksheet = gsheetapi[1]
+	service = gsheetapi[2]
+	update_requests = []
 	column_dict = {}
-	column_dict["A_base"]=find_column_number_by_text(worksheet,"Amplitud_base")
+	column_dict["A_base"]=find_column_number_by_text(worksheet, "Amplitud_base")
 	column_dict["CT"]=find_column_number_by_text(worksheet,"CT [seg]")
 	column_dict["A1"]=find_column_number_by_text(worksheet,"A1 (60s+CT) [Pa]")
 	column_dict["A5"]=find_column_number_by_text(worksheet,"A5 (300s+CT) [Pa]")
@@ -70,24 +74,46 @@ with open(output_file, 'w', newline='') as csvfile:
 						print("Error 1:", str(e))
 					
 					if escribePlanilla:
+						
 						try:
 							target_row = find_row_by_identifier_in_column_b(worksheet,filename)
-							modify_row_with_retry (worksheet,target_row,column_dict["A_base"],outproces[0])
-							modify_row_with_retry (worksheet,target_row,column_dict["CT"],outproces[1])
-							modify_row_with_retry (worksheet,target_row,column_dict["A1"],outproces[2])
-							modify_row_with_retry (worksheet,target_row,column_dict["A5"],outproces[3])
-							modify_row_with_retry (worksheet,target_row,column_dict["A10"],outproces[4])
-							modify_row_with_retry (worksheet,target_row,column_dict["Pmed_base"],outproces[5])
-							modify_row_with_retry (worksheet,target_row,column_dict["Pmed_A10"],outproces[6])
-							modify_row_with_retry (worksheet,target_row,column_dict["QC1"],outproces[7])
-							modify_row_with_retry (worksheet,target_row,column_dict["QC2"],outproces[8])
-							modify_row_with_retry (worksheet,target_row,column_dict["QC3"],outproces[9])
-							modify_row_with_retry (worksheet,target_row,column_dict["Procesamiento"],"max-min")
-							modify_row_with_retry (worksheet,target_row,column_dict["Tz_i"],outproces[10])
-							modify_row_with_retry (worksheet,target_row,column_dict["Tz_A10"],outproces[11])
+						except Exception as e:
+							print("Error in find_row_by_identifier_in_column_b:", str(e))
+							
+						try:
+							# Add your update requests to the list
+							request_append (update_requests,worksheet.id,target_row,column_dict["A_base"],outproces[0],"numberValue")
+							request_append (update_requests,worksheet.id,target_row,column_dict["CT"],outproces[1],"numberValue")
+							request_append (update_requests,worksheet.id,target_row,column_dict["A1"],outproces[2],"numberValue")
+							request_append (update_requests,worksheet.id,target_row,column_dict["A5"],outproces[3],"numberValue")
+							request_append (update_requests,worksheet.id,target_row,column_dict["A10"],outproces[4],"numberValue")
+							request_append (update_requests,worksheet.id,target_row,column_dict["Pmed_base"],outproces[5],"numberValue")
+							request_append (update_requests,worksheet.id,target_row,column_dict["Pmed_A10"],outproces[6],"numberValue")
+							request_append (update_requests,worksheet.id,target_row,column_dict["QC1"],outproces[7],"numberValue")
+							request_append (update_requests,worksheet.id,target_row,column_dict["QC2"],outproces[8],"numberValue")
+							request_append (update_requests,worksheet.id,target_row,column_dict["QC3"],outproces[9],"numberValue")
+							request_append (update_requests,worksheet.id,target_row,column_dict["Procesamiento"],"max-min","stringValue")
+							request_append (update_requests,worksheet.id,target_row,column_dict["Tz_i"],outproces[10],"numberValue")
+							request_append (update_requests,worksheet.id,target_row,column_dict["Tz_A10"],outproces[11],"numberValue")
 							
 						except Exception as e:
-							print("Error:", str(e))
+							print("Error in request append:", str(e))
+	# Execute the gsheet batch update
+	if escribePlanilla:
+		
+	
+		
+		
+		request_body = {
+			'requests': update_requests
+		}
+		try:
+			request = service.spreadsheets().batchUpdate(spreadsheetId=spreadsheetId,body=request_body)
+			response = request.execute()
+		
+		
+		except Exception as e:
+			print("Error executing update in gsheets:", str(e))
 							
     
 if enablePlot:
