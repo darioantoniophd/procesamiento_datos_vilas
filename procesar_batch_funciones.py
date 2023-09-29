@@ -12,15 +12,19 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	
 	datos = json.load(open(pathtofile))
 	qc1 = datos["QC"]["promedioQC1"]
+	qc1 = round(qc1,2)
+	
 	qc2 = datos["QC"]["promedioQC2"]
+	qc2 = round(qc2,2)
 	try:
 		qc3 = datos["QC"]["promedioQC3"]
+		qc3 = round(qc3,2)
 	except Exception as e:
 		print("No hay QC3:", str(e))
 		qc3 = None
 	mem_df= pd.json_normalize(datos["resultados"]["datos"]).apply(pd.to_numeric)
 	temp_ini = mem_df['temp.z'].values[0]*(-6.48e-6)+89.3
-	
+	temp_ini = round(temp_ini,2)
 		
 	x = mem_df['acu.t'].values/1000
 	y = mem_df['dat.pre'].values*-.0046

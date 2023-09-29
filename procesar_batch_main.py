@@ -76,11 +76,7 @@ with open(output_file, 'w', newline='') as csvfile:
 					if escribePlanilla:
 						
 						try:
-							target_row = find_row_by_identifier_in_column_b(worksheet,filename)
-						except Exception as e:
-							print("Error in find_row_by_identifier_in_column_b:", str(e))
-							
-						try:
+							target_row = find_row_by_identifier_in_column_b(worksheet,filename)						
 							# Add your update requests to the list
 							request_append (update_requests,worksheet.id,target_row,column_dict["A_base"],outproces[0],"numberValue")
 							request_append (update_requests,worksheet.id,target_row,column_dict["CT"],outproces[1],"numberValue")
@@ -112,9 +108,10 @@ with open(output_file, 'w', newline='') as csvfile:
 			response = request.execute()
 		
 		
+		
 		except Exception as e:
 			print("Error executing update in gsheets:", str(e))
-							
+		#print(update_requests)					
     
 if enablePlot:
 	fig0.show()
