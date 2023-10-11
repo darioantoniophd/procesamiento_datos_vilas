@@ -29,6 +29,7 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	x = mem_df['acu.t'].values/1000
 	y = mem_df['dat.pre'].values*-.0046
 	temp_all = mem_df['temp.z'].values*(-6.48e-6)+89.3
+	fase_all = mem_df['acu.F1'].values
 	
 	idx_max = argrelextrema(y, np.greater,order=3)[0]
 	idx_min = argrelextrema(y, np.less,order=3)[0]
@@ -54,9 +55,11 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	if primeromax:
 		t = [x[i] for i in idx_max]
 		temp = [temp_all[i] for i in idx_max]
+		fase = [fase_all[i] for i in idx_max]
 	else:
 		t = [x[i] for i in idx_min]
 		temp = [temp_all[i] for i in idx_min]
+		fase = [fase_all[i] for i in idx_min]
 	
 	ampli = [(xx - yy)/2 for xx, yy in zip(ymax, ymin)]
 	ampli_smooth = savgol_filter(ampli, 31, 7)
@@ -69,6 +72,7 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 	Pmed10=-1
 	Pmed0=-1
 	temp_A10=-1
+	fase_A10=-1
 	
 	Pmed0 = round(ymin[5]+ ampli_smooth[5],2)
 	
@@ -82,6 +86,7 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 		    A10 = round(ampli_smooth[i],2)
 		    Pmed10 = round(ymin[i]+ A10,2)
 		    temp_A10 = round(temp[i],2)
+		    fase_A10 = round(fase[i],2)
 		  elif num > ct+300 and  A5 == -1:
 		    A5 = round(ampli_smooth[i],2)
 		  elif num > ct+60 and  A1 == -1:
@@ -104,7 +109,7 @@ def procesar(pathtofile,filename,enableplot,fig0,fig1,fig2):
 		
 		fig2.add_traces(go.Scatter(x=t, y=ampli_smooth+ymin, name=filename+"_pmed"))
 	
-	return [Abase,ct,A1,A5,A10, Pmed0, Pmed10, qc1, qc2, qc3, temp_ini, temp_A10]
+	return [Abase,ct,A1,A5,A10, Pmed0, Pmed10, qc1, qc2, qc3, temp_ini, temp_A10, fase_A10]
 	
 	# procesar2 solo extrae datos del json pero no procesa la curva
 def procesar2(pathtofile,filename):
