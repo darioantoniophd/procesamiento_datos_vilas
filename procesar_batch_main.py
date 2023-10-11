@@ -65,7 +65,7 @@ with open(output_file, 'w', newline='') as csvfile:
 				filename = os.path.splitext(file)[0]
 				# Las mediciones que incluyen estas secuencias de caracteres no se consideran en el análisis:
 				if all(keyword not in filename for keyword in ['PD', 'CC', 'TEST', 'FREC']):
-					print('FILEPATH',filepath)
+					print('\n' + filename)
 					try:
 						outproces = procesar(filepath,filename,enablePlot,fig0,fig1,fig2)
 						writer.writerow([filepath, filename, outproces[0], outproces[1], outproces[2], outproces[3], outproces[4], outproces[5], outproces[6], outproces[7], outproces[8], outproces[9], outproces[10], outproces[11], outproces[12]])
@@ -75,27 +75,27 @@ with open(output_file, 'w', newline='') as csvfile:
 						print("Error 1:", str(e))
 					
 					if escribePlanilla:
-						
-						try:
-							target_row = find_row_by_identifier_in_column_b(worksheet,filename)						
-							# Add your update requests to the list
-							# request_append (update_requests,worksheet.id,target_row,column_dict["A_base"],outproces[0],"numberValue")
-							# request_append (update_requests,worksheet.id,target_row,column_dict["CT"],outproces[1],"numberValue")
-							# request_append (update_requests,worksheet.id,target_row,column_dict["A1"],outproces[2],"numberValue")
-							# request_append (update_requests,worksheet.id,target_row,column_dict["A5"],outproces[3],"numberValue")
-							# request_append (update_requests,worksheet.id,target_row,column_dict["A10"],outproces[4],"numberValue")
-							# request_append (update_requests,worksheet.id,target_row,column_dict["Pmed_base"],outproces[5],"numberValue")
-							# request_append (update_requests,worksheet.id,target_row,column_dict["Pmed_A10"],outproces[6],"numberValue")
-							# request_append (update_requests,worksheet.id,target_row,column_dict["QC1"],outproces[7],"numberValue")
-							# request_append (update_requests,worksheet.id,target_row,column_dict["QC2"],outproces[8],"numberValue")
-							# request_append (update_requests,worksheet.id,target_row,column_dict["QC3"],outproces[9],"numberValue")
-							# request_append (update_requests,worksheet.id,target_row,column_dict["Procesamiento"],"max-min","stringValue")
-							# request_append (update_requests,worksheet.id,target_row,column_dict["Tz_i"],outproces[10],"numberValue")
-							# request_append (update_requests,worksheet.id,target_row,column_dict["Tz_A10"],outproces[11],"numberValue")
-							request_append (update_requests,worksheet.id,target_row,column_dict["Fase_A10"],outproces[12],"numberValue")
+						target_row = find_row_by_identifier_in_column_b(worksheet,filename)	
+						if (target_row is not None):
+							try:					
+								# Add your update requests to the list
+								request_append (update_requests,worksheet.id,target_row,column_dict["A_base"],outproces[0],"numberValue")
+								request_append (update_requests,worksheet.id,target_row,column_dict["CT"],outproces[1],"numberValue")
+								request_append (update_requests,worksheet.id,target_row,column_dict["A1"],outproces[2],"numberValue")
+								request_append (update_requests,worksheet.id,target_row,column_dict["A5"],outproces[3],"numberValue")
+								request_append (update_requests,worksheet.id,target_row,column_dict["A10"],outproces[4],"numberValue")
+								request_append (update_requests,worksheet.id,target_row,column_dict["Pmed_base"],outproces[5],"numberValue")
+								request_append (update_requests,worksheet.id,target_row,column_dict["Pmed_A10"],outproces[6],"numberValue")
+								request_append (update_requests,worksheet.id,target_row,column_dict["QC1"],outproces[7],"numberValue")
+								request_append (update_requests,worksheet.id,target_row,column_dict["QC2"],outproces[8],"numberValue")
+								request_append (update_requests,worksheet.id,target_row,column_dict["QC3"],outproces[9],"numberValue")
+								request_append (update_requests,worksheet.id,target_row,column_dict["Procesamiento"],"max-min","stringValue")
+								request_append (update_requests,worksheet.id,target_row,column_dict["Tz_i"],outproces[10],"numberValue")
+								request_append (update_requests,worksheet.id,target_row,column_dict["Tz_A10"],outproces[11],"numberValue")
+								request_append (update_requests,worksheet.id,target_row,column_dict["Fase_A10"],outproces[12],"numberValue")
 							
-						except Exception as e:
-							print("Error in request append:", str(e))
+							except Exception as e:
+								print("Error in request append:", str(e))
 	# Execute the gsheet batch update
 	if escribePlanilla:
 		

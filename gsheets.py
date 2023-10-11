@@ -46,11 +46,11 @@ def find_row(key_value):
 def find_row_by_identifier_in_column_b(worksheet,key_value):
     try:
         # Assuming the key identifier is in column B
-        print("key_value: ",key_value)
+        # print("key_value: ",key_value)
         cell = worksheet.find(key_value, in_column=2)
         return cell.row
-    except gspread.exceptions.CellNotFound:
-        print("Cell not found: ",key_value)
+    except Exception as e:
+        print("Error, cell not found: ",key_value)
         return None
 
 def modify_row(worksheet, row, col_a, col_a_value):	
